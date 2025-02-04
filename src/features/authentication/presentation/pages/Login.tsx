@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         repeat: -1,
         duration: 2,
         yoyo: true,
-        ease: "power1.inOut",
+        ease: "bounce.inOut",
       });
     }
   }, []);
@@ -34,7 +34,7 @@ const Login: React.FC = () => {
 
   return (
     <main className="relative flex items-center justify-center h-screen w-full bg-zinc-900 overflow-hidden">
-      {/* Animated Stars */}
+      
       <div ref={starsRef} className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 50 }).map((_, i) => (
           <div

@@ -1,7 +1,10 @@
 "use client";
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+gsap.registerPlugin(ScrollTrigger);
 
 interface Admin {
     id: number;
@@ -10,7 +13,6 @@ interface Admin {
     description: string;
     email: string;
 }
-
 
 const admins: Admin[] = [
     {
@@ -24,62 +26,76 @@ const admins: Admin[] = [
         id: 2,
         name: 'Batool Shahid',
         profilePicture: 'https://via.placeholder.com/150',
-        description: "As a final-year student, my academic pursuits have equipped me with a strong foundation in data science and digital marketing. Throughout my studies, I have developed skills in data cleaning, data handling, data visualization, machine learning, and prediction algorithm development. Additionally, I have gained knowledge of SEO optimization techniques, including keyword research, on-page optimization, and link building. For my final-year project, I aim to leverage these skills to explore innovative solutions and demonstrate my understanding of these concepts.",
+        description: "As a final-year student...",
         email: 'batoolshahid@example.com',
     },
     {
         id: 3,
         name: 'Athar Ali',
         profilePicture: 'https://via.placeholder.com/150',
-        description: "As a final-year student, I have developed strong skills in frontend development, WordPress, and programming. My expertise includes HTML, CSS, JavaScript, React, and Tailwind CSS, along with WordPress customization, theme development, and plugin integration. Additionally, I have experience in C++, C#, and Python, which help me approach problem-solving with a broader perspective. I am passionate about creating responsive, user-friendly, and high-performing web solutions. For my final-year project, I aim to apply these skills to develop an innovative and efficient digital solution.",
+        description: "As a final-year student...",
         email: 'atharali@example.com',
     },
 ];
 
-
-const Star = ({ delay, duration }: { delay: number; duration: number }) => {
-    return (
-        <motion.div
-            className="absolute w-0.5 h-0.5 bg-white rounded-full shadow-star"
-            initial={{ y: 0 }}
-            animate={{ y: '100vh' }}
-            transition={{
-                delay,
-                duration,
-                repeat: Infinity,
-                repeatType: 'loop',
-                ease: 'linear',
-            }}
-        />
-    );
-};
-
 const Creators: React.FC = () => {
     const [selectedAdmin, setSelectedAdmin] = useState<number | null>(null);
-
+    const bgRef = useRef<HTMLDivElement>(null);
+    const floatingOrbsRef = useRef<HTMLDivElement[]>([]);
 
     const toggleDropdown = (id: number) => {
         setSelectedAdmin(selectedAdmin === id ? null : id);
     };
 
+    useEffect(() => {
+        gsap.to(bgRef.current, {
+            background: "linear-gradient(135deg, #4A00E0, #8E2DE2, #00C9FF, #92FE9D)",
+            backgroundSize: "400% 400%",
+            duration: 10,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+        });
 
-    const stars = Array.from({ length: 100 }).map((_, i) => ({
-        id: i,
-        top: Math.random() * 100,
-        left: Math.random() * 100,
-        delay: Math.random() * 5,
-        duration: 10 + Math.random() * 20,
-    }));
+        floatingOrbsRef.current.forEach((orb, index) => {
+            gsap.to(orb, {
+                y: () => Math.random() * 50 - 25,
+                x: () => Math.random() * 50 - 25,
+                duration: 4 + Math.random() * 3,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+            });
+        });
+
+        gsap.to(".glow-effect", {
+            boxShadow: "0px 0px 50px rgba(255, 255, 255, 0.3)",
+            scrollTrigger: {
+                trigger: ".glow-effect",
+                start: "top 80%",
+                end: "bottom 20%",
+                scrub: true,
+            },
+        });
+    }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#13131a] to-[#000000] flex flex-col items-center justify-center p-6 relative overflow-hidden">
-
-            <div className="absolute inset-0 z-0">
-                {stars.map((star) => (
-                    <Star key={star.id} delay={star.delay} duration={star.duration} />
-                ))}
-            </div>
-
+        <div
+            ref={bgRef}
+            className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden"
+        >
+            {Array.from({ length: 10 }).map((_, i) => (
+                <div
+                    key={i}
+                    ref={(el) => { floatingOrbsRef.current[i] = el as HTMLDivElement; }}
+                    className="absolute w-20 h-20 bg-purple-400 rounded-full opacity-30"
+                    style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        filter: "blur(30px)",
+                    }}
+                />
+            ))}
 
             <div className="flex space-x-4 mb-8 z-10">
                 {admins.map((admin) => (
@@ -95,7 +111,6 @@ const Creators: React.FC = () => {
                 ))}
             </div>
 
-
             <div className="w-full max-w-2xl space-y-4 z-10">
                 <AnimatePresence>
                     {admins.map((admin) => (
@@ -108,7 +123,6 @@ const Creators: React.FC = () => {
                                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                                 className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden border border-white/10"
                             >
-
                                 <div className="relative h-64">
                                     <img
                                         src={admin.profilePicture}
@@ -119,7 +133,6 @@ const Creators: React.FC = () => {
                                         <h1 className="text-4xl font-bold text-white">{admin.name}</h1>
                                     </div>
                                 </div>
-
 
                                 <div className="p-8">
                                     <p className="text-gray-200 text-lg mb-6">{admin.description}</p>

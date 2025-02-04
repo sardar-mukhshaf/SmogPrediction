@@ -11,8 +11,8 @@ const Particles = () => {
   useEffect(() => {
     const particles = gsap.utils.toArray(".particle");
     particles.forEach((particle) => {
-      gsap.to(particle, {
-        y: "random(-50, 50)",
+      gsap.to(particle as Element, {
+        y: "random(-50, 70)",
         x: "random(-50, 50)",
         opacity: "random(0.3, 0.7)",
         repeat: -1,
