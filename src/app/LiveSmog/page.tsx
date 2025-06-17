@@ -1,8 +1,11 @@
-import LiveSmogScene from "@/features/live-smog/presentations/pages/LiveSmog"
+'use client'
+import { lazy } from "react"
+
+const LiveSmogValues = lazy(() => import('@/features/live-smog/presentation/pages/LiveSmogValue'))
 
 const page = () => {
     return (
-        <LiveSmogScene />
+        <LiveSmogValues />
     )
 }
 

@@ -1,35 +1,69 @@
 "use client";
-import React, { useState } from "react";
+
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaCloud, FaSmog, FaWind, FaSun, FaLeaf } from "react-icons/fa";
+import { FaCloud, FaSmog, FaWind, FaSun, FaLeaf, FaMarsStrokeH, FaClock, FaArrowsAltH } from "react-icons/fa";
+import { getPollutantSeries, pollutantData } from '../../utils/predictions';
+import { sensorInput } from '@/features/predictions/utils/sensor-data';
 
 const AQIComponent: React.FC = () => {
-    const [aqi, setAqi] = useState<number>(120);
+    const [aqi, setAqi] = useState<number>(99);
+
+    useEffect(() => {
+    const fetchAqiPrediction = async () => {
+        try {
+            console.log("Sending data to API:", sensorInput); // Log data being sent
+            
+            // const response = await axios.post(
+            //     "https://aqi-api-clean.onrender.com/predict",
+            //     sensorInput,
+            //     {
+            //         headers: { "Content-Type": "application/json" },
+            //         timeout: 10000,
+            //     }
+            // );
+            // setAqi(response.data.predicted_aqi);
+        } catch (error) {
+            console.error("Error fetching AQI prediction:", error);
+        }
+    };
+
+    // Call once immediately then set interval
+    fetchAqiPrediction();
+    const intervalId = setInterval(fetchAqiPrediction, 20000);
+    return () => clearInterval(intervalId);
+}, []);
 
     const pollutants = [
-        { name: "PM2.5", value: 35, unit: "µg/m³", icon: <FaCloud className="w-6 h-6" /> },
-        { name: "PM10", value: 50, unit: "µg/m³", icon: <FaSmog className="w-6 h-6" /> },
-        { name: "O₃", value: 120, unit: "ppb", icon: <FaSun className="w-6 h-6" /> },
-        { name: "NO₂", value: 25, unit: "ppb", icon: <FaWind className="w-6 h-6" /> },
-        { name: "SO₂", value: 10, unit: "ppb", icon: <FaLeaf className="w-6 h-6" /> },
-    ];
-
-    const aqiLevels = [
-        { level: "Good", range: "0-50", color: "from-green-400 to-green-600", recommendation: "Enjoy outdoor activities!" },
-        { level: "Moderate", range: "51-100", color: "from-yellow-400 to-yellow-600", recommendation: "Sensitive individuals should limit prolonged outdoor exertion." },
-        { level: "Unhealthy for Sensitive Groups", range: "101-150", color: "from-orange-400 to-orange-600", recommendation: "Children and elderly should avoid outdoor activities." },
-        { level: "Unhealthy", range: "151-200", color: "from-red-400 to-red-600", recommendation: "Everyone should avoid outdoor activities." },
-        { level: "Very Unhealthy", range: "201-300", color: "from-purple-400 to-purple-600", recommendation: "Health warnings of emergency conditions." },
-        { level: "Hazardous", range: "301+", color: "from-maroon-400 to-maroon-600", recommendation: "Health alert: everyone may experience serious effects." },
+        { name: "PM2.5", value: 185.5, unit: "µg/m³", icon: <FaCloud className="w-6 h-6" /> },
+        { name: "PM10", value: 432.0, unit: "µg/m³", icon: <FaSmog className="w-6 h-6" /> },
+        { name: "O₃", value: 0.25, unit: "ppm", icon: <FaSun className="w-6 h-6" /> },
+        { name: "NO₂", value: 0.71, unit: "ppm", icon: <FaWind className="w-6 h-6" /> },
+        { name: "SO₂", value: 0.35, unit: "ppm", icon: <FaLeaf className="w-6 h-6" /> },
+        { name: "CO", value: 15.8, unit: "ppm", icon: <FaMarsStrokeH className="w-6 h-6" /> },
+        { name: "NO", value: 0.45, unit: "ppm", icon: <FaClock className="w-6 h-6" /> },
+        { name: "Wind Speed", value: 1.2, unit: "m/s", icon: <FaArrowsAltH className="w-6 h-6" /> },
+        { name: "Wind Direction", value: 90.0, unit: "°", icon: <FaWind className="w-6 h-6" /> },
+        { name: "CO 8hr", value: 12.3, unit: "ppm", icon: <FaClock className="w-6 h-6" /> },
+        { name: "PM2.5 Avg", value: 165.0, unit: "µg/m³", icon: <FaCloud className="w-6 h-6" /> },
+        { name: "PM10 Avg", value: 410.0, unit: "µg/m³", icon: <FaSmog className="w-6 h-6" /> },
+        { name: "SO₂ Avg", value: 0.31, unit: "ppm", icon: <FaLeaf className="w-6 h-6" /> },
+        { name: "O₃ 8hr", value: 0.21, unit: "ppm", icon: <FaSun className="w-6 h-6" /> },
+        { name: "NOx", value: 0.95, unit: "ppm", icon: <FaWind className="w-6 h-6" /> },
+        { name: "NOx Avg", value: 0.95, unit: "ppm", icon: <FaWind className="w-6 h-6" /> },
+        { name: "NOx 8hr", value: 0.95, unit: "ppm", icon: <FaWind className="w-6 h-6" /> },
+        { name: "O₃ Avg", value: 0.25, unit: "ppm", icon: <FaSun className="w-6 h-6" /> },
+        { name: "O₃ 8hr Avg", value: 0.21, unit: "ppm", icon: <FaSun className="w-6 h-6" /> },
     ];
 
     const getAQILevel = (aqi: number) => {
-        if (aqi <= 50) return aqiLevels[0];
-        if (aqi <= 100) return aqiLevels[1];
-        if (aqi <= 150) return aqiLevels[2];
-        if (aqi <= 200) return aqiLevels[3];
-        if (aqi <= 300) return aqiLevels[4];
-        return aqiLevels[5];
+        if (aqi <= 50) return { level: "Good", color: "from-green-300 to-green-500" };
+        if (aqi <= 100) return { level: "Moderate", color: "from-yellow-300 to-yellow-500" };
+        if (aqi <= 150) return { level: "Sensitive", color: "from-orange-300 to-orange-500" };
+        if (aqi <= 200) return { level: "Unhealthy", color: "from-red-300 to-red-500" };
+        if (aqi <= 300) return { level: "Very Unhealthy", color: "from-purple-300 to-purple-500" };
+        return { level: "Hazardous", color: "from-pink-300 to-pink-500" };
     };
 
     const currentLevel = getAQILevel(aqi);
@@ -37,24 +71,24 @@ const AQIComponent: React.FC = () => {
 
     return (
         <motion.div
-            className="system p-8 flex-1 text-white bg-gray-900 rounded-xl h-[92vh] shadow-2xl w-[81vw] overflow-x-hidden overflow-y-auto"
+            className="system p-8 flex-1 bg-gradient-to-br from-white to-blue-100 rounded-xl h-[92vh] shadow-xl w-[81vw] overflow-x-hidden overflow-y-auto"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            transition={{ duration: 1 }}
         >
             <motion.h2
-                className="text-3xl font-bold mb-6 text-center"
-                animate={{ scale: [1, 1.15, 1] }}
+                className="text-[2vw] font-bold mb-6 text-center text-gray-700"
+                animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
             >
                 Air Quality Index (AQI)
             </motion.h2>
 
-            <motion.div className="relative w-48 h-48 mx-auto mb-6" animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}>
+            <motion.div className="relative w-40 h-48 mx-auto mb-6">
                 <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <circle className="text-gray-700 stroke-current" strokeWidth="10" cx="50" cy="50" r="40" fill="transparent"></circle>
+                    <circle className="text-gray-300 stroke-current" strokeWidth="10" cx="50" cy="50" r="40" fill="transparent" />
                     <motion.circle
-                        className={`text-${currentLevel.color.split("-")[1]}-500 stroke-current`}
+                        className="text-green-500 stroke-current"
                         strokeWidth="10"
                         strokeLinecap="round"
                         cx="50"
@@ -65,33 +99,32 @@ const AQIComponent: React.FC = () => {
                         strokeDashoffset={251.2 - (251.2 * progress) / 100}
                         initial={{ strokeDashoffset: 251.2 }}
                         animate={{ strokeDashoffset: 251.2 - (251.2 * progress) / 100 }}
-                        transition={{ duration: 1.5, ease: "easeInOut" }}
-                    ></motion.circle>
+                        transition={{ duration: 1.5 }}
+                    />
                 </svg>
             </motion.div>
 
-            <motion.div className="text-center mb-6" initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
-                <p className="text-xl font-semibold">Level: <span className={`text-${currentLevel.color.split("-")[1]}-500`}>{currentLevel.level}</span></p>
-                <p className="text-sm text-gray-400">Range: {currentLevel.range}</p>
-            </motion.div>
+            <div className="text-center mb-6">
+                <p className="text-xl font-semibold text-gray-700">Level: <span className="font-bold text-blue-500">{currentLevel.level}</span></p>
+                <p className="text-sm text-gray-500">AQI: {aqi}</p>
+            </div>
 
-            <motion.div className="space-y-4">
-                <h3 className="text-xl font-bold mb-4 ml-20">Pollutants</h3>
+            <div className="space-y-4 flex flex-col items-center">
+                <h3 className="text-xl font-bold mb-4 text-gray-700">Pollutants</h3>
                 {pollutants.map((pollutant, index) => (
                     <motion.div
                         key={index}
-                        className="flex justify-between items-center z-[100] bg-gray-800 p-4 rounded-lg hover:bg-gray-700 transition-all duration-300"
-                        whileHover={{ scale: 1.08, rotate: 2 }}
-                        transition={{ duration: 0.3 }}
+                        className="flex justify-between items-center w-[70vw] bg-gradient-to-r from-blue-100 to-blue-200 p-4 rounded-xl shadow-md hover:scale-105 transition-transform"
+                        whileHover={{ scale: 1.05 }}
                     >
                         <div className="flex items-center space-x-3">
-                            <div className={`text-${currentLevel.color.split("-")[1]}-500`}>{pollutant.icon}</div>
-                            <span className="text-white">{pollutant.name}</span>
+                            <div className="text-blue-500">{pollutant.icon}</div>
+                            <span className="text-gray-700 font-medium">{pollutant.name}</span>
                         </div>
-                        <span className="text-white font-semibold">{pollutant.value} {pollutant.unit}</span>
+                        <span className="text-gray-600 font-semibold">{pollutant.value} {pollutant.unit}</span>
                     </motion.div>
                 ))}
-            </motion.div>
+            </div>
         </motion.div>
     );
 };

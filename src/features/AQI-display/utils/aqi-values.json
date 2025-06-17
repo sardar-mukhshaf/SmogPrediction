@@ -1,0 +1,94 @@
+[
+  
+    {
+      "name": "PM2.5",
+      "value": 185.5,
+      "unit": "µg/m³",
+      "category": "primary"
+    },
+    {
+      "name": "PM10",
+      "value": 432.0,
+      "unit": "µg/m³",
+      "category": "primary"
+    },
+    {
+      "name": "O₃",
+      "value": 0.25,
+      "unit": "ppm",
+      "category": "primary"
+    },
+    {
+      "name": "NO₂",
+      "value": 0.71,
+      "unit": "ppm",
+      "category": "primary"
+    },
+    {
+      "name": "SO₂",
+      "value": 0.35,
+      "unit": "ppm",
+      "category": "primary"
+    },
+    {
+      "name": "CO",
+      "value": 15.8,
+      "unit": "ppm",
+      "category": "primary"
+    },
+    {
+      "name": "NOx",
+      "value": 0.95,
+      "unit": "ppm",
+      "category": "secondary"
+    },
+    {
+      "name": "NO",
+      "value": 0.45,
+      "unit": "ppm",
+      "category": "secondary"
+    },
+    {
+      "name": "O₃ (8hr)",
+      "value": 0.21,
+      "unit": "ppm",
+      "category": "averaged"
+    },
+    {
+      "name": "CO (8hr)",
+      "value": 12.3,
+      "unit": "ppm",
+      "category": "averaged"
+    },
+    {
+      "name": "PM2.5 (avg)",
+      "value": 165.0,
+      "unit": "µg/m³",
+      "category": "averaged"
+    },
+    {
+      "name": "PM10 (avg)",
+      "value": 410.0,
+      "unit": "µg/m³",
+      "category": "averaged"
+    },
+    {
+      "name": "SO₂ (avg)",
+      "value": 0.31,
+      "unit": "ppm",
+      "category": "averaged"
+    },
+    {
+      "name": "Wind Speed",
+      "value": 1.2,
+      "unit": "m/s",
+      "category": "meteorological"
+    },
+    {
+      "name": "Wind Direction",
+      "value": 90.0,
+      "unit": "°",
+      "category": "meteorological"
+    }
+
+]

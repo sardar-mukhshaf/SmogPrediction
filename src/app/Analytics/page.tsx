@@ -1,10 +1,12 @@
-import SmogPredictionAnalytics from '@/features/analytics/presentations/pages/SmogPredictionAnalytics'
-import React from 'react'
+'use client'
+import React, { lazy } from 'react'
 
+
+const Analytics = lazy(() => import('@/features/analytics/presentation/pages/Analytics'))
 
 const page = () => {
     return (
-        <SmogPredictionAnalytics />
+        <Analytics />
     )
 }
 

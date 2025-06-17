@@ -2,74 +2,80 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const user = {
-    name: "Sardar Mukhshaf",
-    avatar: "/profile-placeholder.png", 
+    name: "John Doe",
 };
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-gray-900 text-white p-4 shadow-md">
-            <div className="container mx-auto flex justify-between items-center">
-                
-                <span className="text-xl font-semibold">Welcome, {user.name.split(" ")[0]}</span>
+        <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 text-white py-4 shadow-xl">
+            <div className="container mx-auto flex justify-between items-center px-6">
+                {/* Brand & Welcome Message */}
+                <span className="text-2xl font-bold tracking-wide drop-shadow-md">
+                    Welcome, {user.name.split(" ")[0]}
+                </span>
 
-               
-                <div className="hidden md:flex space-x-6">
-                    <Link href="/Creator" className="hover:text-gray-400">
+                {/* Desktop Links */}
+                <div className="hidden md:flex space-x-10 text-lg font-medium">
+                    <Link href="/Creator" className="hover:text-gray-200 transition duration-300">
                         Creators
                     </Link>
-                    <Link href="/Profile" className="hover:text-gray-400">
+                    <Link href="/Profile" className="hover:text-gray-200 transition duration-300">
                         Profile
                     </Link>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                    <Image
-                        src={user.avatar}
-                        alt="User Avatar"
-                        width={40}
-                        height={40}
-                        className="w-10 h-10 rounded-full border-2 border-gray-600"
-                    />
-                    <button
-                        className="md:hidden focus:outline-none"
-                        onClick={() => setIsOpen(!isOpen)}
+                {/* Register Button */}
+                <div className="hidden md:block">
+                    <Link
+                        href="/Login"
+                        className="px-6 py-2 bg-white text-gray-900 font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-300"
                     >
-                        {isOpen ? <X size={28} /> : <Menu size={28} />}
-                    </button>
+                        Register
+                    </Link>
+                </div>
+
+                {/* Hamburger Icon */}
+                <div className="md:hidden z-50" onClick={() => setIsOpen(!isOpen)}>
+                    {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                 </div>
             </div>
 
-            
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -10 }}
+                        initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="md:hidden bg-gray-800 py-4 px-6 mt-2 rounded-lg"
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                        className="md:hidden bg-white text-gray-900 px-6 py-4 rounded-b-xl shadow-md"
                     >
                         <Link
                             href="/Creator"
-                            className="block py-2 hover:text-gray-400"
+                            className="block py-2 text-lg font-medium hover:text-blue-600 transition"
                             onClick={() => setIsOpen(false)}
                         >
                             Creators
                         </Link>
                         <Link
                             href="/Profile"
-                            className="block py-2 hover:text-gray-400"
+                            className="block py-2 text-lg font-medium hover:text-blue-600 transition"
                             onClick={() => setIsOpen(false)}
                         >
                             Profile
+                        </Link>
+                        <Link
+                            href="/Login"
+                            className="mt-4 block w-full text-center bg-gradient-to-r from-green-400 to-blue-500 text-white py-2 rounded-full font-semibold hover:from-green-500 hover:to-blue-600 transition"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            Register
                         </Link>
                     </motion.div>
                 )}

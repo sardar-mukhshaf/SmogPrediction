@@ -1,6 +1,8 @@
-import Profile from '@/features/profile/presentation/pages/Profile'
-import React from 'react'
+'use client'
+import React, { lazy } from 'react'
 
+
+const Profile = lazy(() => import('@/features/profile/presentation/pages/Profile'))
 
 const page = () => {
     return (

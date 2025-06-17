@@ -1,6 +1,7 @@
-import Signup from '@/features/authentication/presentation/pages/Signup'
-import React from 'react'
+'use client'
+import React, { lazy } from 'react'
 
+const Signup = lazy(() => import('@/features/authentication/presentation/pages/Signup'))
 
 const Page = () => {
     return <Signup />

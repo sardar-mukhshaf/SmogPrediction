@@ -12,9 +12,9 @@ const Particles = () => {
     const particles = gsap.utils.toArray(".particle");
     particles.forEach((particle) => {
       gsap.to(particle as Element, {
-        y: "random(-50, 70)",
-        x: "random(-50, 50)",
-        opacity: "random(0.3, 0.7)",
+        y: "random(-60, 60)",
+        x: "random(-60, 60)",
+        opacity: "random(0.3, 0.8)",
         repeat: -1,
         yoyo: true,
         duration: gsap.utils.random(3, 6),
@@ -24,16 +24,16 @@ const Particles = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 overflow-hidden">
-      {Array.from({ length: 40 }).map((_, i) => (
+    <div ref={containerRef} className="absolute inset-0 overflow-hidden z-0">
+      {Array.from({ length: 50 }).map((_, i) => (
         <motion.div
           key={i}
-          className="particle absolute bg-blue-400 rounded-full opacity-30"
+          className="particle absolute bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-50"
           style={{
             left: Math.random() * window.innerWidth,
             top: Math.random() * window.innerHeight,
-            width: Math.random() * 6 + 2,
-            height: Math.random() * 6 + 2,
+            width: Math.random() * 5 + 3,
+            height: Math.random() * 5 + 3,
           }}
         />
       ))}
@@ -58,29 +58,29 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <main className="relative flex items-center justify-center h-screen w-full bg-zinc-900 overflow-hidden">
+    <main className="relative flex items-center justify-center h-screen w-full bg-gradient-to-br from-blue-200 via-purple-300 to-pink-300 overflow-hidden">
       <Particles />
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: -30 }}
+        initial={{ opacity: 0, scale: 0.9, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="bg-zinc-800 shadow-lg rounded-xl overflow-hidden w-[90%] max-w-md p-6 relative z-10"
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl rounded-3xl p-8 w-[90%] max-w-md z-10 flex flex-col gap-6"
       >
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-center font-bold text-3xl text-white"
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-center text-4xl font-extrabold text-white drop-shadow-lg"
         >
           Create Account
         </motion.h1>
 
-        <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             id="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
             type="text"
             placeholder="Enter your username"
             required
@@ -89,7 +89,7 @@ const Signup: React.FC = () => {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
             type="email"
             placeholder="Enter your email"
             required
@@ -98,7 +98,7 @@ const Signup: React.FC = () => {
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
             type="password"
             placeholder="Enter your password"
             required
@@ -107,23 +107,23 @@ const Signup: React.FC = () => {
             id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
             type="password"
             placeholder="Confirm your password"
             required
           />
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all"
+            className="mt-4 w-full py-3 bg-gradient-to-r from-purple-500 via-pink-400 to-orange-400 text-white font-semibold rounded-2xl hover:scale-105 transform transition-all duration-300 shadow-lg"
           >
             Sign Up
           </button>
         </form>
-        <p className="text-center text-gray-400 mt-4">
-          Already have an account? {" "}
+        <p className="text-center text-white/80 text-sm mt-2">
+          Already have an account?{" "}
           <span
             onClick={() => router.push("/Login")}
-            className="text-blue-400 hover:text-blue-500 cursor-pointer"
+            className="text-pink-800 hover:underline cursor-pointer"
           >
             Login
           </span>

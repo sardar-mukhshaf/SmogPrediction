@@ -15,17 +15,17 @@ const Login: React.FC = () => {
     if (starsRef.current) {
       const stars = starsRef.current.querySelectorAll(".star");
       gsap.to(stars, {
-        y: "random(-10, 10)",
-        x: "random(-10, 10)",
+        y: "random(-20, 20)",
+        x: "random(-20, 20)",
         repeat: -1,
-        duration: 2,
+        duration: 4,
         yoyo: true,
-        ease: "bounce.inOut",
+        ease: "sine.inOut",
       });
     }
   }, []);
 
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setEmail("");
     setPassword("");
@@ -33,48 +33,46 @@ const Login: React.FC = () => {
   };
 
   return (
-    <main className="relative flex items-center justify-center h-screen w-full bg-zinc-900 overflow-hidden">
+    <main className="relative flex items-center justify-center h-screen w-full bg-gradient-to-br from-pink-200 via-purple-300 to-blue-400 overflow-hidden">
       
-      <div ref={starsRef} className="absolute inset-0 pointer-events-none">
+      <div ref={starsRef} className="absolute inset-0 pointer-events-none z-0">
         {Array.from({ length: 50 }).map((_, i) => (
           <div
             key={i}
-            className="star absolute bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"
+            className="star absolute bg-gradient-to-r from-pink-400 to-purple-500 opacity-70 rounded-full"
             style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
+              width: `${Math.random() * 4 + 3}px`,
+              height: `${Math.random() * 4 + 3}px`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
             }}
           />
         ))}
       </div>
-      
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: -30 }}
+        initial={{ opacity: 0, scale: 0.95, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="bg-zinc-800 shadow-lg rounded-xl overflow-hidden w-[90%] max-w-md p-6 relative z-10"
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl rounded-3xl p-8 w-[90%] max-w-md z-10 flex flex-col gap-6"
       >
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          className="text-center font-bold text-3xl text-white"
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-center text-4xl font-extrabold text-white drop-shadow-lg"
         >
           Welcome Back!
         </motion.h1>
 
-        <form onSubmit={formHandler} className="mt-6 flex flex-col gap-5">
+        <form onSubmit={formHandler} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-gray-300 font-semibold">
-              Email
-            </label>
+            <label htmlFor="email" className="text-white font-medium">Email</label>
             <input
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
               type="email"
               placeholder="Enter your email"
               required
@@ -82,52 +80,46 @@ const Login: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-gray-300 font-semibold">
-              Password
-            </label>
+            <label htmlFor="password" className="text-white font-medium">Password</label>
             <input
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="px-4 py-2 rounded-lg bg-zinc-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="px-4 py-3 rounded-xl bg-white/30 text-white placeholder-white/70 backdrop-blur-md focus:ring-2 focus:ring-purple-400 focus:outline-none transition"
               type="password"
               placeholder="Enter your password"
               required
             />
           </div>
 
-          <div className="flex items-center justify-between text-gray-400 text-sm">
+          <div className="flex justify-between items-center text-white/80 text-sm mt-2">
             <div className="flex items-center">
               <input
                 id="rememberMe"
                 type="checkbox"
-                className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-600 rounded"
+                className="h-4 w-4 text-purple-500 focus:ring-purple-500 rounded"
               />
               <label htmlFor="rememberMe" className="ml-2">Remember me</label>
             </div>
-            <a href="#" className="hover:text-blue-500 transition">
-              Forgot password?
-            </a>
+            <a href="#" className="hover:text-pink-300 transition">Forgot password?</a>
           </div>
 
-          <div className="flex flex-col items-center gap-4 mt-4">
-            <button
-              type="submit"
-              className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all"
+          <button
+            type="submit"
+            className="mt-4 w-full py-3 bg-gradient-to-r from-purple-500 via-pink-400 to-orange-400 text-white font-semibold rounded-2xl hover:scale-105 transform transition-all duration-300 shadow-lg"
+          >
+            Login
+          </button>
+
+          <p className="text-center text-white/80 text-sm mt-2">
+            Don&apos;t have an account?{" "}
+            <span
+              className="text-pink-800 hover:underline cursor-pointer"
+              onClick={() => router.push("/Signup")}
             >
-              Login
-            </button>
-
-            <p className="text-gray-400 text-sm">
-              Don&apos;t have an account?{" "}
-              <span
-                className="text-blue-400 cursor-pointer hover:underline"
-                onClick={() => router.push("/Signup")}
-              >
-                Sign up
-              </span>
-            </p>
-          </div>
+              Sign up
+            </span>
+          </p>
         </form>
       </motion.div>
     </main>

@@ -1,9 +1,15 @@
-import React from "react";
+'use client'
+import React, { lazy, Suspense } from "react";
 import "./globals.css";
-import Signup from "@/features/authentication/presentation/pages/Signup";
+
+
+const Predictions = lazy(() => import("@/features/predictions/presentation/Predictions"));
 
 export default function Home() {
   return (
-    <Signup />
+
+    <Suspense fallback={<div>Loading...</div>}>
+      <Predictions />
+    </Suspense>
   );
 }

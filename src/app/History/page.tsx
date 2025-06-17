@@ -1,11 +1,14 @@
-import HistoryComponent from '@/features/history/presentaions/pages/History'
-import React from 'react'
+'use client'
+import React, { lazy } from 'react'
+
+
+const SmogHistory = lazy(() => import('@/features/history/presentation/pages/SmogHistory'))
 
 
 const page = () => {
     return (
-        <HistoryComponent />
+        <SmogHistory />
     )
 }
 
-export default page
+export default page;

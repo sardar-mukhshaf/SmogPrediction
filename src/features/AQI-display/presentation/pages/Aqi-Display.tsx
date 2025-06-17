@@ -6,7 +6,7 @@ import AQIComponent from '../components/AqiComponent';
 
 const AqiDisplay = () => {
     return (
-        <div className='flex flex-col h-screen bg-gray-900 overflow-hidden'>
+        <div className='flex flex-col h-screen overflow-hidden'>
             <Navbar />
             <div className='flex'>
                 <Sidebar />

@@ -1,4 +1,7 @@
-import Creators from "@/features/specials/presentations/pages/Creators"
+'use client'
+import { lazy } from "react"
+
+const Creators = lazy(() => import('@/features/specials/presentation/pages/Creators'))
 
 const page = () => {
     return (

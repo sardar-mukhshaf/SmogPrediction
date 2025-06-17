@@ -6,8 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
 import { SiPodcastindex, SiKdenlive } from "react-icons/si";
 import { MdInsights, MdFlutterDash } from "react-icons/md";
-import { FaHistory } from "react-icons/fa";
-
+import { FaHammer, FaHistory } from "react-icons/fa";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,46 +22,51 @@ const Sidebar = () => {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen);
-    };
-
+    const toggleSidebar = () => setIsOpen(!isOpen);
 
     return (
         <div className="relative">
             <motion.aside
-                initial={{ width: "4vw" }}
-                animate={{ width: isOpen ? "15vw" : "4vw" }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className={`bg-gray-900 h-[60vh] top-0 left-0 transition-all duration-300 ${isMobile ? "absolute" : ""}`}
+                initial={{ width: "4rem" }}
+                animate={{ width: isOpen ? "14rem" : "4rem" }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className={`bg-white border-r border-gray-200 shadow-md h-screen top-0 left-0 fixed z-40 ${isMobile ? "absolute" : ""} rounded-r-xl`}
             >
-                <div className="flex items-center px-4 py-5 relative">
-                    <h1 className={`text-xl font-bold flex gap-2 items-center text-white transition-opacity ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}>
-                        <MdFlutterDash /> DESKBOARD
-                    </h1>
+                <div className="flex items-center justify-between px-4 py-4">
+                    <motion.div
+                        className={`flex items-center transition-opacity ${isOpen ? "opacity-100" : "opacity-0 hidden"}`}
+                    >    <span className="ml-2 text-lg font-semibold text-gray-800"></span>
+                    </motion.div>
+
+                    <button
+                        onClick={toggleSidebar}
+                        className="text-gray-600 hover:text-blue-500 transition-colors"
+                    >
+                        {isOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+                    </button>
                 </div>
 
-
-                <motion.nav className="mt-8">
-                    <ul className="mt-4 space-y-3">
+                <nav className="mt-6">
+                    <ul className="space-y-4">
                         {[
-                            { icon: <SiPodcastindex />, text: "AQI Index", link: "/AqiDisplay" },
+                            { icon: <FaHammer />, text: "Predictions", link: "/Predictions" },
+                            { icon: <SiPodcastindex />, text: "Aqi Display", link: "/AqiDisplay" },
                             { icon: <MdInsights />, text: "Data Insights", link: "/Analytics" },
                             { icon: <SiKdenlive />, text: "Live Smog", link: "/LiveSmog" },
                             { icon: <FaHistory />, text: "History", link: "/History" },
                         ].map(({ icon, text, link }, index) => (
-                            <li key={index} className="flex items-center gap-4 px-4 py-2 text-white hover:bg-zinc-700 cursor-pointer">
-
-                                <Link href={link} className="text-2xl">{icon}</Link>
-
+                            <li key={index} className="flex items-center gap-4 px-4 py-2 text-gray-700 hover:bg-blue-50 rounded-lg cursor-pointer transition-all duration-300">
+                                <Link href={link} className="text-2xl text-blue-400">
+                                    {icon}
+                                </Link>
                                 <AnimatePresence>
                                     {isOpen && !isMobile && (
                                         <motion.span
-                                            initial={{ opacity: 0, x: -20 }}
+                                            initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -20 }}
-                                            transition={{ duration: 0.2 }}
-                                            className="text-lg"
+                                            exit={{ opacity: 0, x: -10 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="text-base font-medium text-gray-700"
                                         >
                                             <Link href={link}>{text}</Link>
                                         </motion.span>
@@ -71,27 +75,22 @@ const Sidebar = () => {
                             </li>
                         ))}
                     </ul>
-                </motion.nav>
+                </nav>
 
-
-                <div className="mt-6 p-4 text-white">
-                    <h2 className={`${isOpen ? "block" : "hidden"} mb-5 text-sm opacity-60`}>Help & Support</h2>
-                    <Link href="/help-center" className={`${isOpen ? "block" : "hidden"} block text-lg py-1 hover:text-blue-400`}>
-                        Help Center
-                    </Link>
-                    <Link href="/settings" className={`${isOpen ? "block" : "hidden"} block text-lg py-1 hover:text-blue-400`}>
-                        Settings
-                    </Link>
+                <div className="mt-10 px-6 text-gray-600">
+                    {isOpen && (
+                        <>
+                            <h2 className="mb-2 text-xs uppercase tracking-wider text-gray-400">Help & Support</h2>
+                            <Link href="/help-center" className="block text-sm py-1 hover:text-blue-500 transition-colors">
+                                Help Center
+                            </Link>
+                            <Link href="/settings" className="block text-sm py-1 hover:text-blue-500 transition-colors">
+                                Settings
+                            </Link>
+                        </>
+                    )}
                 </div>
             </motion.aside>
-
-
-            <button
-                onClick={toggleSidebar}
-                className="absolute top-[1vh] left-[6vw] bg-gray-800 text-white p-2 rounded-full shadow-md transition-all duration-300 z-50"
-            >
-                {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-            </button>
         </div>
     );
 };

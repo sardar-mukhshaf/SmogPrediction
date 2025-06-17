@@ -1,5 +1,7 @@
-import Login from '@/features/authentication/presentation/pages/Login'
-import React from 'react'
+'use client'
+import React, { lazy } from 'react'
+
+const Login = lazy(() => import('@/features/authentication/presentation/pages/Login'))
 
 
 const Page = () => {

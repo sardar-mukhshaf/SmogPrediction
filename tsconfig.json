@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/features/AdminPanel/data/datasource/apiController.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/features/AdminPanel/data/datasource/apiController.tsx", "src/features/live-smog/utils/liveSmogValues.tsx"],
   "exclude": ["node_modules"]
 }
