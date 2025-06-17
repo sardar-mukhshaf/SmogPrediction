@@ -13,17 +13,17 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 text-white py-4 shadow-xl">
-            <div className="container mx-auto flex justify-between items-center px-6">
+        <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 text-white py-4 shadow-xl sticky top-0 z-20">
+            <div className="container mx-auto flex justify-between items-center px-4">
                 {/* Brand & Welcome Message */}
-                <span className="text-2xl font-bold tracking-wide drop-shadow-md">
+                <span className="text-2xl -ml-16 font-bold tracking-wide drop-shadow-md">
                     Welcome, {user.name.split(" ")[0]}
                 </span>
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex space-x-10 text-lg font-medium">
                     <Link href="/Creator" className="hover:text-gray-200 transition duration-300">
-                        Creators
+                        Team Members
                     </Link>
                     <Link href="/Profile" className="hover:text-gray-200 transition duration-300">
                         Profile
@@ -46,33 +46,32 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.4 }}
-                        className="md:hidden bg-white text-gray-900 px-6 py-4 rounded-b-xl shadow-md"
+                        initial={{ x: "100%", opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: "100%", opacity: 0 }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                        className="fixed top-16 right-4 z-50 bg-white text-gray-900 shadow-xl rounded-xl w-56 py-4 px-4 flex flex-col gap-3 md:hidden"
                     >
                         <Link
                             href="/Creator"
-                            className="block py-2 text-lg font-medium hover:text-blue-600 transition"
+                            className="py-2 text-center text-lg font-medium rounded-md hover:bg-gradient-to-r hover:from-purple-400 hover:to-pink-500 hover:text-white transition duration-300"
                             onClick={() => setIsOpen(false)}
                         >
                             Creators
                         </Link>
                         <Link
                             href="/Profile"
-                            className="block py-2 text-lg font-medium hover:text-blue-600 transition"
+                            className="py-2 text-center text-lg font-medium rounded-md hover:bg-gradient-to-r hover:from-purple-400 hover:to-pink-500 hover:text-white transition duration-300"
                             onClick={() => setIsOpen(false)}
                         >
                             Profile
                         </Link>
                         <Link
                             href="/Login"
-                            className="mt-4 block w-full text-center bg-gradient-to-r from-green-400 to-blue-500 text-white py-2 rounded-full font-semibold hover:from-green-500 hover:to-blue-600 transition"
+                            className="mt-2 bg-gradient-to-r from-green-400 to-blue-500 text-white py-2 rounded-full font-semibold text-center hover:from-green-500 hover:to-blue-600 transition duration-300"
                             onClick={() => setIsOpen(false)}
                         >
                             Register
@@ -80,6 +79,7 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
         </nav>
     );
 };

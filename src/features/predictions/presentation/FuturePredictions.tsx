@@ -1,87 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { toast, Toaster } from "react-hot-toast";
-import axios, { AxiosError } from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 import { sensorInput } from "../utils/sensor-data";
-import { AQILevel, ChartDataPoint, ForecastCardProps, ForecastType, SensorData } from "../utils/predictionInterfaces";
-
-const LOCATIONS: string[] = [
-  "Kotli", "Mirpur", "Bhimbhar", "Rawlakot", "Bagh", "Poonch", "Muzaffarabad", "Neelum", "Haveli",
-];
+import { ChartDataPoint, ForecastCardProps, ForecastType, getAQILevel, LOCATIONS, SensorData } from "../utils/predictionInterfaces";
+import { GiBiohazard, GiSkullCrossedBones } from "react-icons/gi";
+import { MdError, MdWarning } from "react-icons/md";
 
 
-const aqiLevels: AQILevel[] = [
-  { level: "Good", range: "0-50", color: "green" },
-  { level: "Moderate", range: "51-100", color: "yellow" },
-  { level: "Unhealthy for Sensitive Groups", range: "101-150", color: "orange" },
-  { level: "Unhealthy", range: "151-200", color: "red" },
-  { level: "Very Unhealthy", range: "201-300", color: "purple" },
-  { level: "Hazardous", range: "301+", color: "pink" },
-];
-
-const getAQILevel = (value: number): AQILevel => {
-  if (value <= 50) return aqiLevels[0];
-  if (value <= 100) return aqiLevels[1];
-  if (value <= 150) return aqiLevels[2];
-  if (value <= 200) return aqiLevels[3];
-  if (value <= 300) return aqiLevels[4];
-  return aqiLevels[5];
-};
-
-const checkAndNotifyAQI = (aqi: number): void => {
-  toast.dismiss();
-
-  if (aqi > 101) {
-    let message = "";
-    let color = "";
-
-    if (aqi <= 150) {
-      message = "Unhealthy for Sensitive Groups: Limit prolonged outdoor activity.";
-      color = "orange";
-    } else if (aqi <= 200) {
-      message = "Unhealthy: Sensitive groups should avoid outdoor activity.";
-      color = "red";
-    } else if (aqi <= 300) {
-      message = "Very Unhealthy: Avoid outdoor activities.";
-      color = "purple";
-    } else {
-      message = "Hazardous: Avoid all outdoor activities.";
-      color = "pink";
-    }
-
-    toast.custom(
-      (t) => (
-        <div
-          className={`${
-            t.visible ? "animate-enter" : "animate-leave"
-          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-        >
-          <div className="flex-1 w-0 p-4">
-            <div className="flex items-start">
-              <div className="ml-3 flex-1">
-                <p className="text-sm font-medium text-gray-900">AQI Alert: {aqi.toFixed(2)}</p>
-                <p className={`mt-1 text-sm text-${color}-500`}>{message}</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex border-l border-gray-200">
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-500 focus:outline-none"
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-      ),
-      { duration: 10000 }
-    );
-  }
-};
 
 const FuturePredictions: React.FC = () => {
   const [aqi, setAqi] = useState<number>(0);
@@ -99,7 +29,7 @@ const FuturePredictions: React.FC = () => {
         data,
         {
           headers: { "Content-Type": "application/json" },
-          timeout: 10000,
+          timeout: 15000,
         }
       );
 
@@ -116,6 +46,63 @@ const FuturePredictions: React.FC = () => {
       checkAndNotifyAQI(predictedAQI);
     } catch (error) {
       toast.error("Failed to fetch AQI prediction. Please try again later.");
+    }
+  };
+
+
+  const checkAndNotifyAQI = (aqi: number): void => {
+    toast.dismiss();
+
+    if (aqi > 101) {
+      let message = "";
+      let colorClass = "";
+      let IconComponent = MdWarning; // Default icon
+
+      if (aqi <= 150) {
+        message = "Unhealthy for Sensitive Groups: Limit prolonged outdoor activity.";
+        colorClass = "text-yellow-500";
+        IconComponent = MdWarning;
+      } else if (aqi <= 200) {
+        message = "Unhealthy: Sensitive groups should avoid outdoor activity.";
+        colorClass = "text-red-500";
+        IconComponent = MdError;
+      } else if (aqi <= 300) {
+        message = "Very Unhealthy: Avoid outdoor activities.";
+        colorClass = "text-purple-500";
+        IconComponent = GiBiohazard;
+      } else {
+        message = "Hazardous: Avoid all outdoor activities.";
+        colorClass = "text-pink-500";
+        IconComponent = GiSkullCrossedBones;
+      }
+
+      toast.custom(
+        (t) => (
+          <div
+            className={`${t.visible ? "animate-enter" : "animate-leave"
+              } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto z-[1000] flex ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="flex-1 w-0 p-4 flex items-center space-x-3">
+              <IconComponent className={`w-10 h-10 ${colorClass}`} />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  AQI Alert: {aqi.toFixed(2)}
+                </p>
+                <p className={`mt-1 text-sm ${colorClass}`}>{message}</p>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-500 focus:outline-none"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ),
+        { duration: 15000 }
+      );
     }
   };
 
@@ -143,12 +130,12 @@ const FuturePredictions: React.FC = () => {
   return (
     <motion.div
       key={pageKey}
-      className="min-h-screen p-6 bg-gradient-to-br from-blue-100 to-green-100 text-gray-800 w-full flex flex-col gap-10"
+      className="min-h-screen p-10 bg-gradient-to-br from-blue-100 to-green-100 text-gray-800 w-full flex flex-col gap-10"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="bottom-right" reverseOrder={false} />
 
       {/* Conditional Error Display */}
       {error && (
@@ -159,7 +146,7 @@ const FuturePredictions: React.FC = () => {
 
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-extrabold tracking-tight ml-32">Smog & AQI Display</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight ml-40">Smog Prediction</h1>
         <select
           className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none"
           value={location}

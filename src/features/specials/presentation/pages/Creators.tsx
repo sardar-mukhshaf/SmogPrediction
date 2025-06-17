@@ -4,40 +4,10 @@ import React, { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { admins } from "../components/Info";
+import { FaUserSecret, FaUserTie } from "react-icons/fa";
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface Admin {
-    id: number;
-    name: string;
-    profilePicture: string;
-    description: string;
-    email: string;
-}
-
-const admins: Admin[] = [
-    {
-        id: 1,
-        name: "Sardar Mukhshaf",
-        profilePicture: "https://discover.therookies.co/content/images/2024/08/still01.jpg",
-        description: "A MERN stack developer with expertise in animation libraries including Framer Motion, GSAP, and LocomotiveJS, specializing in creating immersive digital experiences. Recent work includes developing SmogSense, an advanced air quality prediction system that combines ML algorithms with an intuitive UI to visualize pollution data through dynamic animations and interactive charts. The project leverages React for responsive frontend components, Node.js for real-time data processing, and incorporates DevOps practices for reliable deployment and performance optimization.",
-        email: "mukhashaf.khurshid@mightyfurniture.co.uk",
-    },
-    {
-        id: 2,
-        name: "Batool Shahid",
-        profilePicture: "https://via.placeholder.com/150",
-        description: "Front-end enthusiast focused on intuitive, beautiful, and functional interfaces with React & Tailwind.",
-        email: "batoolshahid@example.com",
-    },
-    {
-        id: 3,
-        name: "Athar Ali",
-        profilePicture: "https://via.placeholder.com/150",
-        description: "Backend developer & ML explorer: APIs, server-side logic, and predictive models integration.",
-        email: "atharali@example.com",
-    },
-];
 
 const Creators: React.FC = () => {
     const bgRef = useRef<HTMLDivElement>(null);
@@ -45,122 +15,91 @@ const Creators: React.FC = () => {
 
     useEffect(() => {
         gsap.to(bgRef.current, {
-            background: "linear-gradient(135deg, #7F00FF, #E100FF, #00FFFF, #FF00FF)",
-            backgroundSize: "400% 400%",
+            background: "linear-gradient(135deg, #f4f4f4, #eaeaea)",
             duration: 20,
             repeat: -1,
             yoyo: true,
             ease: "power1.inOut",
         });
 
-        floatingOrbsRef.current.forEach((orb, index) => {
+        floatingOrbsRef.current.forEach((orb) => {
             gsap.to(orb, {
-                y: () => Math.random() * 50 - 25,
-                x: () => Math.random() * 50 - 25,
-                duration: 4 + Math.random() * 3,
+                y: () => Math.random() * 30 - 15,
+                x: () => Math.random() * 30 - 15,
+                duration: 6,
                 repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut",
             });
-        });
-
-        gsap.to(".glow-effect", {
-            boxShadow: "0px 0px 50px rgba(173, 216, 230, 0.7)",
-            scrollTrigger: {
-                trigger: ".glow-effect",
-                start: "top 80%",
-                end: "bottom 20%",
-                scrub: true,
-            },
         });
     }, []);
 
     return (
         <div
             ref={bgRef}
-            className="min-h-screen bg-gradient-to-r from-purple-800 via-pink-600 to-blue-500 flex flex-col items-center justify-start p-8 relative overflow-hidden"
+            className="min-h-screen flex flex-col items-center justify-start p-8 relative overflow-hidden bg-gradient-to-r from-gray-100 to-gray-200"
         >
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
                 <motion.div
                     key={i}
                     ref={(el) => { floatingOrbsRef.current[i] = el as HTMLDivElement; }}
-                    className="absolute w-24 h-24 bg-pink-500 rounded-full opacity-10"
+                    className="absolute w-16 h-16 bg-gray-300 rounded-full opacity-10"
                     style={{
                         top: `${Math.random() * 100}%`,
                         left: `${Math.random() * 100}%`,
-                        filter: "blur(50px)",
-                    }}
-                    animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.1, 0.3, 0.1],
-                    }}
-                    transition={{
-                        duration: 6 + Math.random() * 2,
-                        repeat: Infinity,
-                        repeatType: "reverse",
+                        filter: "blur(40px)",
                     }}
                 />
             ))}
 
             <motion.h1
-                className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-400 mb-16 z-10"
-                initial={{ opacity: 0, y: -50 }}
+                className="text-4xl md:text-5xl font-bold text-gray-800 mb-12 z-10 text-center"
+                initial={{ opacity: 0, y: -40 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
             >
-                Meet Our Creators
+                Our Professional Team Members
             </motion.h1>
 
-            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8 z-10">
+            <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 z-10">
                 <AnimatePresence>
-                    {admins.map((admin) => (
+                    {admins.map((admin, index) => (
                         <motion.div
                             key={admin.id}
-                            initial={{ opacity: 0, y: 100, scale: 0.9 }}
+                            initial={{ opacity: 0, y: 80, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             whileHover={{
-                                scale: 1.05,
-                                boxShadow: "0 0 30px rgba(0,255,255,0.4)",
+                                scale: 1.03,
+                                boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
                             }}
-                            transition={{ duration: 0.6 }}
-                            className="bg-gradient-to-br from-purple-700/60 to-pink-600/40 backdrop-blur-lg rounded-3xl shadow-2xl border border-purple-400/30 h-[50vh] glow-effect flex flex-col overflow-hidden"
+                            transition={{ duration: 0.5 }}
+                            className="bg-white rounded-xl shadow-md border border-gray-200 flex flex-col overflow-hidden"
                         >
-                            <div className="relative h-1/2">
-                                <motion.img
-                                    src={admin.profilePicture}
-                                    alt={admin.name}
-                                    className="w-full h-full object-cover"
-                                    initial={{ scale: 1.2 }}
-                                    animate={{ scale: 1 }}
-                                    transition={{ duration: 1.5 }}
-                                />
-                                <motion.div
-                                    className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.8, delay: 0.2 }}
-                                >
-                                    <h2 className="text-3xl font-bold text-cyan-300 drop-shadow-lg">{admin.name}</h2>
-                                </motion.div>
+                            <div className="relative h-48 flex items-center justify-center bg-gray-100">
+                                {index === 1 ? (
+                                    <FaUserTie className="text-gray-500 text-6xl" /> // Icon for 2nd admin
+                                ) : index === 2 ? (
+                                    <FaUserSecret className="text-gray-500 text-6xl" /> // Icon for 3rd admin
+                                ) : (
+                                    <motion.img
+                                        src={admin.profilePicture}
+                                        alt={admin.name}
+                                        className="w-full h-full object-cover"
+                                        initial={{ scale: 1.1 }}
+                                        animate={{ scale: 1 }}
+                                        transition={{ duration: 1 }}
+                                    />
+                                )}
                             </div>
-                            <div className="p-6 flex-1 flex flex-col justify-between">
-                                <motion.p
-                                    className="text-pink-200 text-sm leading-relaxed overflow-y-auto"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.8, delay: 0.4 }}
-                                >
+                            <div className="p-5 flex-1 flex flex-col justify-between">
+                                <h2 className="text-xl font-semibold text-gray-800 mb-2">{admin.name}</h2>
+                                <p className="text-gray-600 text-sm leading-relaxed flex-1 overflow-y-auto">
                                     {admin.description}
-                                </motion.p>
-                                <motion.div
-                                    className="flex items-center space-x-4 mt-4"
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.6, delay: 0.6 }}
-                                >
+                                </p>
+                                <div className="flex items-center space-x-3 mt-4">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        className="h-6 w-6 text-cyan-300"
+                                        className="h-5 w-5 text-gray-500"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
@@ -174,11 +113,11 @@ const Creators: React.FC = () => {
                                     </svg>
                                     <a
                                         href={`mailto:${admin.email}`}
-                                        className="text-cyan-200 hover:text-pink-400 transition duration-300 text-sm"
+                                        className="text-sm text-blue-600 hover:underline"
                                     >
                                         {admin.email}
                                     </a>
-                                </motion.div>
+                                </div>
                             </div>
                         </motion.div>
                     ))}
@@ -186,55 +125,59 @@ const Creators: React.FC = () => {
             </div>
 
             <motion.div
-                className="w-full max-w-5xl mt-20 z-10"
-                initial={{ opacity: 0, y: 100 }}
+                className="w-full max-w-5xl mt-16 z-10"
+                initial={{ opacity: 0, y: 80 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }}
             >
-                <div className="bg-gradient-to-br from-pink-600/20 to-purple-700/30 backdrop-blur-xl rounded-3xl p-10 border border-pink-500/30 shadow-xl">
+                <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
                     <motion.h2
-                        className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-purple-400 mb-8"
-                        initial={{ opacity: 0, x: -50 }}
+                        className="text-3xl font-semibold text-gray-800 mb-4"
+                        initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        transition={{ duration: 0.6 }}
                     >
-                        Smog Prediction System with ML
+                        Smog Prediction System (ML Powered)
                     </motion.h2>
                     <motion.p
-                        className="text-pink-200 text-base leading-relaxed"
-                        initial={{ opacity: 0, y: 50 }}
+                        className="text-gray-600 text-base leading-relaxed"
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
                     >
-                        Technical Foundation
-                        The system integrates multiple data sources to build a holistic view of air quality:
-
-                        Multi-parameter pollutant tracking: Monitors PM2.5, PM10, O₃, NO₂, SO₂, CO, NOx and other critical pollutants
-                        Real-time sensor network: Processes continuous data streams from distributed sensor arrays
-                        Weather variable integration: Incorporates wind speed, direction, and atmospheric conditions
-                        Temporal analysis: Evaluates both instantaneous readings and time-averaged values (8-hour, daily)
-                        Frontend Innovation
-                        The React-based frontend features:
-
-                        Dynamic visualizations: Real-time AQI gauges with color-coded risk indicators
-                        Motion-enhanced UI: Leverages Framer Motion for fluid, engaging user interactions
-                        Responsive design: Adapts seamlessly across device types
-                        Geospatial heatmap: Visualizes pollution hotspots with gradient overlays
-                        Interactive charts: Displays temporal trends with Recharts integration
-                        Predictive Capabilities
-                        The system goes beyond current conditions to deliver actionable forecasts:
-
-                        Multi-horizon predictions: Next-day, week, and month forecasts
-                        Uncertainty modeling: Incorporates statistical variance for realistic prediction ranges
-                        Pollutant-specific trends: Tracks individual pollutant trajectories
-                        Location-based customization: Adapts predictions to specific geographic contexts
-                        Public Health Impact
-                        SmogSense empowers:
-
-                        Early warning system: Alerts to dangerous air quality conditions before they reach critical levels
-                        Health risk assessment: Correlates AQI values with potential health impacts
-                        Exposure mitigation: Provides timely information to minimize public exposure during peak pollution events
-                        Policy decision support: Offers data-driven insights for environmental regulation and urban planning </motion.p>
+                        Our system tracks critical pollutants like PM2.5, PM10, NO₂, SO₂, and CO, alongside weather variables to forecast air quality. With real-time sensor data, heatmaps, and predictive modeling, it informs public health and urban policy decisions. Features include dynamic AQI charts, uncertainty modeling, and geo-specific forecasting.
+                    </motion.p>
+                    <motion.ul
+                        className="mt-6 list-disc list-inside text-gray-700 space-y-2"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                    >
+                        <li>
+                            <strong>Real-time Monitoring:</strong> Live updates from distributed IoT sensors across the city.
+                        </li>
+                        <li>
+                            <strong>Interactive Heatmaps:</strong> Visualize pollution hotspots and trends over time.
+                        </li>
+                        <li>
+                            <strong>Predictive Analytics:</strong> Machine learning models forecast AQI and pollutant spikes.
+                        </li>
+                        <li>
+                            <strong>Weather Integration:</strong> Correlates meteorological data with air quality for improved accuracy.
+                        </li>
+                        <li>
+                            <strong>Public Health Alerts:</strong> Automated notifications for hazardous air quality events.
+                        </li>
+                        <li>
+                            <strong>Geo-specific Insights:</strong> Neighborhood-level breakdowns and personalized recommendations.
+                        </li>
+                        <li>
+                            <strong>Data Export:</strong> Downloadable reports for research and policy analysis.
+                        </li>
+                        <li>
+                            <strong>Mobile Friendly:</strong> Responsive design for seamless access on any device.
+                        </li>
+                    </motion.ul>
                 </div>
             </motion.div>
         </div>

@@ -33,7 +33,7 @@ const Sidebar = () => {
     <>
       {/* Mobile View */}
       {isMobile && (
-        <div className="fixed mt-16 top-4 left-4 z-50">
+        <div className="fixed mt-20 top-4 left-4 z-50">
           <button onClick={toggleSidebar} className="text-gray-600 hover:text-blue-500">
             {sidebarOpen ? <FiX size={28} /> : <FiMenu size={28} />}
           </button>
@@ -65,9 +65,9 @@ const Sidebar = () => {
       {/* Desktop View */}
       {!isMobile && (
         <motion.aside
-          animate={{ width: sidebarOpen ? "14rem" : "4rem" }}
+          animate={{ width: sidebarOpen ? "12rem" : "4rem" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-0 left-0 h-screen bg-white border-r shadow-md flex flex-col rounded-r-xl z-40"
+          className="fixed top-15 left-0 h-screen bg-white border-r shadow-md flex flex-col rounded-r-xl z-40"
         >
           <div className="flex items-center justify-between p-4">
             {sidebarOpen && <span className="text-lg font-semibold text-gray-800">Menu</span>}
