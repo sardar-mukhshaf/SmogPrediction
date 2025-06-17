@@ -1,8 +1,6 @@
-import pkg from 'eslint-config-next';
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export', // THIS makes Next.js export static HTML (for Netlify)
+};
 
-
-const { NextJs } = pkg;
-
-export default [
-  NextJs(),
-];
+module.exports = nextConfig;
