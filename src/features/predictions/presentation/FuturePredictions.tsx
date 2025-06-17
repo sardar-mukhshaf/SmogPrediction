@@ -146,7 +146,7 @@ const FuturePredictions: React.FC = () => {
 
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-extrabold tracking-tight ml-40">Smog Prediction</h1>
+        <h1 className="text-3xl font-extrabold tracking-none mt-6 ml-24">Smog Prediction</h1>
         <select
           className="bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none"
           value={location}

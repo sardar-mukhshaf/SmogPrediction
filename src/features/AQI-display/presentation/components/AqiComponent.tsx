@@ -75,7 +75,7 @@ const AQIComponent: React.FC = () => {
             transition={{ duration: 1 }}
         >
             <motion.h2
-                className="text-[4vh] font-bold mb-6 text-center text-gray-700"
+                className="text-[4vh] font-bold mt-6 text-center text-gray-700"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
             >

@@ -65,7 +65,7 @@ const HistoryComponent = () => {
 
       {/* Time Range Buttons */}
       <motion.div
-        className="flex justify-center gap-4 mb-8"
+        className="flex justify-center gap-4 mx2"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -74,7 +74,7 @@ const HistoryComponent = () => {
           <motion.button
             key={range.name}
             onClick={() => setSelectedTimeRange(range.name)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-sm hover:bg-gray-100 transition-all ${
+            className={`flex items-center gap-1 px-2 py-2 rounded-lg bg-white border border-gray-300 shadow-sm hover:bg-gray-100 transition-all ${
               selectedTimeRange === range.name ? "bg-gray-200" : ""
             }`}
             whileHover={{ scale: 1.05 }}
@@ -87,7 +87,7 @@ const HistoryComponent = () => {
 
       {/* Line Chart */}
       <motion.div
-        className="bg-white mx-12 p-4 rounded-xl shadow-xl"
+        className="bg-white mx-12rounded-xl shadow-xl"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
@@ -108,7 +108,7 @@ const HistoryComponent = () => {
 
       {/* Insights */}
       <motion.div
-        className="bg-white mx-12 p-6 rounded-xl shadow-lg"
+        className="bg-white mx-1 px-2 rounded-xl shadow-lg"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.8 }}
