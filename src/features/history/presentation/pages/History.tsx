@@ -27,8 +27,9 @@ const getAQILevel = (value: number) => {
 
 const HistoryComponent = () => {
   const [selectedTimeRange, setSelectedTimeRange] = useState("Last 7 Days");
-  const currentAqi = parseFloat(localStorage.getItem("predictedAQI") || "120");
   const currentTimeRange = timeRanges.find((range) => range.name === selectedTimeRange);
+  // Get the latest AQI value from historicalData or set a default value
+  const currentAqi = Math.random() * 300; // Simulating current AQI value for demonstration
   const level = getAQILevel(currentAqi);
 
   return (

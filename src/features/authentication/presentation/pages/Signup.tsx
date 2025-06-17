@@ -5,35 +5,59 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 
-const Particles = () => {
-  const containerRef = useRef(null);
+// Particle data type
+interface ParticleData {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+// Particle animation component
+const Particles: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [particles, setParticles] = useState<ParticleData[]>([]);
 
   useEffect(() => {
-    const particles = gsap.utils.toArray(".particle");
-    particles.forEach((particle) => {
-      gsap.to(particle as Element, {
-        y: "random(-60, 60)",
-        x: "random(-60, 60)",
-        opacity: "random(0.3, 0.8)",
-        repeat: -1,
-        yoyo: true,
-        duration: gsap.utils.random(3, 6),
-        ease: "sine.inOut",
-      });
-    });
+    if (typeof window !== "undefined") {
+      const newParticles: ParticleData[] = Array.from({ length: 50 }).map(() => ({
+        left: Math.random() * window.innerWidth,
+        top: Math.random() * window.innerHeight,
+        width: Math.random() * 5 + 3,
+        height: Math.random() * 5 + 3,
+      }));
+      setParticles(newParticles);
+    }
   }, []);
+
+  useEffect(() => {
+    if (particles.length > 0) {
+      const particleElements = gsap.utils.toArray(".particle");
+      particleElements.forEach((particle) => {
+        gsap.to(particle as Element, {
+          y: "random(-60, 60)",
+          x: "random(-60, 60)",
+          opacity: "random(0.3, 0.8)",
+          repeat: -1,
+          yoyo: true,
+          duration: gsap.utils.random(3, 6),
+          ease: "sine.inOut",
+        });
+      });
+    }
+  }, [particles]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden z-0">
-      {Array.from({ length: 50 }).map((_, i) => (
+      {particles.map((particle, i) => (
         <motion.div
           key={i}
           className="particle absolute bg-gradient-to-r from-purple-400 to-pink-400 rounded-full opacity-50"
           style={{
-            left: Math.random() * window.innerWidth,
-            top: Math.random() * window.innerHeight,
-            width: Math.random() * 5 + 3,
-            height: Math.random() * 5 + 3,
+            left: particle.left,
+            top: particle.top,
+            width: particle.width,
+            height: particle.height,
           }}
         />
       ))}
@@ -41,6 +65,7 @@ const Particles = () => {
   );
 };
 
+// Main Signup page
 const Signup: React.FC = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -50,6 +75,7 @@ const Signup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // form validation logic can be added here
     setUsername("");
     setEmail("");
     setPassword("");

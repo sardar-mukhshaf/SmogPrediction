@@ -1,22 +1,20 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { toast, Toaster } from 'react-hot-toast';
-import axios from "axios";
+import { toast, Toaster } from "react-hot-toast";
+import axios, { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+
 import { sensorInput } from "../utils/sensor-data";
+import { AQILevel, ChartDataPoint, ForecastCardProps, ForecastType, SensorData } from "../utils/predictionInterfaces";
 
-const LOCATIONS = ["Kotli", "Mirpur", "Bhimbhar", "Rawlakot", "Bagh", "Poonch", "Muzaffarabad", "Neelum", "Haveli"];
+const LOCATIONS: string[] = [
+  "Kotli", "Mirpur", "Bhimbhar", "Rawlakot", "Bagh", "Poonch", "Muzaffarabad", "Neelum", "Haveli",
+];
 
-// Forecast data type
-type ForecastType = {
-  day: number;
-  week: number;
-  month: number;
-};
 
-// AQI Levels & Color Codes
-const aqiLevels = [
+const aqiLevels: AQILevel[] = [
   { level: "Good", range: "0-50", color: "green" },
   { level: "Moderate", range: "51-100", color: "yellow" },
   { level: "Unhealthy for Sensitive Groups", range: "101-150", color: "orange" },
@@ -25,7 +23,7 @@ const aqiLevels = [
   { level: "Hazardous", range: "301+", color: "pink" },
 ];
 
-const getAQILevel = (value: number) => {
+const getAQILevel = (value: number): AQILevel => {
   if (value <= 50) return aqiLevels[0];
   if (value <= 100) return aqiLevels[1];
   if (value <= 150) return aqiLevels[2];
@@ -34,9 +32,7 @@ const getAQILevel = (value: number) => {
   return aqiLevels[5];
 };
 
-// AQI notification function
-const checkAndNotifyAQI = (aqi: number) => {
-  // Dismiss any existing toasts to prevent overlap
+const checkAndNotifyAQI = (aqi: number): void => {
   toast.dismiss();
 
   if (aqi > 101) {
@@ -44,106 +40,100 @@ const checkAndNotifyAQI = (aqi: number) => {
     let color = "";
 
     if (aqi <= 150) {
-      message = "Unhealthy for Sensitive Groups: People with respiratory or heart conditions, the elderly and children should limit prolonged outdoor activity.";
+      message = "Unhealthy for Sensitive Groups: Limit prolonged outdoor activity.";
       color = "orange";
     } else if (aqi <= 200) {
-      message = "Unhealthy: Everyone may begin to experience health effects. Sensitive groups should avoid outdoor activity.";
+      message = "Unhealthy: Sensitive groups should avoid outdoor activity.";
       color = "red";
     } else if (aqi <= 300) {
-      message = "Very Unhealthy: Health alert! Everyone may experience more serious health effects. Avoid outdoor activities.";
+      message = "Very Unhealthy: Avoid outdoor activities.";
       color = "purple";
     } else {
-      message = "Hazardous: Health warning of emergency conditions! Everyone should avoid all outdoor activities.";
+      message = "Hazardous: Avoid all outdoor activities.";
       color = "pink";
     }
 
-    toast.custom((t) => (
-      <div
-        className={`${t.visible ? 'animate-enter' : 'animate-leave'
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
           } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-      >
-        <div className="flex-1 w-0 p-4">
-          <div className="flex items-start">
-            <div className="ml-3 flex-1">
-              <p className="text-sm font-medium text-gray-900">
-                AQI Alert: {aqi.toFixed(2)}
-              </p>
-              <p className={`mt-1 text-sm text-${color}-500`}>
-                {message}
-              </p>
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">AQI Alert: {aqi.toFixed(2)}</p>
+                <p className={`mt-1 text-sm text-${color}-500`}>{message}</p>
+              </div>
             </div>
           </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-500 focus:outline-none"
+            >
+              Dismiss
+            </button>
+          </div>
         </div>
-        <div className="flex border-l border-gray-200">
-          <button
-            onClick={() => toast.dismiss(t.id)}
-            className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-600 hover:text-gray-500 focus:outline-none"
-          >
-            Dismiss
-          </button>
-        </div>
-      </div>
-    ), { duration: 6000 });
+      ),
+      { duration: 10000 }
+    );
   }
 };
 
 const FuturePredictions: React.FC = () => {
   const [aqi, setAqi] = useState<number>(0);
   const [forecast, setForecast] = useState<ForecastType>({ day: 0, week: 0, month: 0 });
-  const [location, setLocation] = useState<string>("Delhi");
+  const [location, setLocation] = useState<string>(LOCATIONS[0]);
   const [pageKey, setPageKey] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAqiPrediction = async () => {
+  const fetchAqiPrediction = async (): Promise<void> => {
     try {
-      setError(null); // Clear any previous errors
-      const data = sensorInput[Math.floor(Math.random() * sensorInput.length)];
-      const response = await axios.post(
-        "https://aqi-api-clean.onrender.com/predict",
+      const data: SensorData = sensorInput[Math.floor(Math.random() * sensorInput.length)];
+
+      const response = await axios.post<{ predicted_aqi: number }>(
+        process.env.NEXT_PUBLIC_AQI_API_URL || "https://aqi-api-clean.onrender.com/predict",
         data,
-        { headers: { "Content-Type": "application/json" }, timeout: 10000 }
+        {
+          headers: { "Content-Type": "application/json" },
+          timeout: 10000,
+        }
       );
-      const rawAQI = response.data.predicted_aqi ?? 120;
 
-      // Format to 2 decimal places
-      const predictedAQI = parseFloat(rawAQI.toFixed(2));
-
+      const predictedAQI = parseFloat((response.data.predicted_aqi || 120).toFixed(2));
       setAqi(predictedAQI);
 
       setForecast({
-        day: parseFloat((predictedAQI + 5 + (Math.random() * 6 - 4)).toFixed(3)),  // ±3 variation
-        week: parseFloat((predictedAQI + 15 + (Math.random() * 16 - 7)).toFixed(2)), // ±8 variation
-        month: parseFloat((predictedAQI + 30 + (Math.random() * 30 - 13)).toFixed(2)) // ±15 variation
+        day: parseFloat((predictedAQI + 5 + (Math.random() * 6 - 4)).toFixed(2)),
+        week: parseFloat((predictedAQI + 15 + (Math.random() * 16 - 7)).toFixed(2)),
+        month: parseFloat((predictedAQI + 30 + (Math.random() * 30 - 13)).toFixed(2)),
       });
 
-      // Notify after setting new AQI value
+      setError(null);
       checkAndNotifyAQI(predictedAQI);
     } catch (error) {
-      console.error("Error fetching AQI:", error);
-      setError("Failed to fetch AQI data. Please try again later.");
-      // Show error toast
-      toast.error("Failed to fetch AQI data.", { duration: 6000 });
+      toast.error("Failed to fetch AQI prediction. Please try again later.");
     }
   };
 
   useEffect(() => {
-    // Initial fetch
     fetchAqiPrediction();
 
-    // Set up interval for fetching and notifications
     const intervalId = setInterval(() => {
       fetchAqiPrediction();
-      setPageKey(prev => prev + 1);
-    }, 10000); // 10 seconds
+      setPageKey((prev) => prev + 1);
+    }, 10000);
 
-    // Cleanup interval
     return () => clearInterval(intervalId);
-  }, [location]); // Only location as dependency
+  }, [location]);
 
   const level = getAQILevel(aqi);
   const progress = (aqi / 500) * 100;
 
-  const chartData = [
+  const chartData: ChartDataPoint[] = [
     { name: "Now", aqi },
     { name: "Tomorrow", aqi: forecast.day },
     { name: "Next Week", aqi: forecast.week },
@@ -159,12 +149,14 @@ const FuturePredictions: React.FC = () => {
       transition={{ duration: 1 }}
     >
       <Toaster position="top-right" reverseOrder={false} />
-      {/* Error Display */}
+
+      {/* Conditional Error Display */}
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mx-8" role="alert">
           <span className="block sm:inline">{error}</span>
         </div>
       )}
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-extrabold tracking-tight ml-32">Smog & AQI Display</h1>
@@ -177,7 +169,9 @@ const FuturePredictions: React.FC = () => {
           }}
         >
           {LOCATIONS.map((city) => (
-            <option key={city} value={city}>{city}</option>
+            <option key={city} value={city}>
+              {city}
+            </option>
           ))}
         </select>
       </div>
@@ -186,13 +180,15 @@ const FuturePredictions: React.FC = () => {
       <div className="flex justify-center">
         <motion.div
           className="relative w-44 h-44 rounded-full bg-white shadow-xl flex items-center justify-center"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
           <svg className="absolute w-full h-full">
             <circle cx="50%" cy="50%" r="70" stroke="lightgray" strokeWidth="10" fill="none" />
             <circle
-              cx="50%" cy="50%" r="70"
+              cx="50%"
+              cy="50%"
+              r="70"
               stroke={level.color}
               strokeWidth="10"
               fill="none"
@@ -232,7 +228,7 @@ const FuturePredictions: React.FC = () => {
   );
 };
 
-const ForecastCard: React.FC<{ title: string; value: number }> = ({ title, value }) => {
+const ForecastCard: React.FC<ForecastCardProps> = ({ title, value }) => {
   const level = getAQILevel(value);
   return (
     <motion.div
