@@ -1,10 +1,8 @@
 "use client";
 
-import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { FaCloud, FaSmog, FaWind, FaSun, FaLeaf, FaMarsStrokeH, FaClock, FaArrowsAltH } from "react-icons/fa";
-import { getPollutantSeries, pollutantData } from '../../utils/predictions';
 import { sensorInput } from '@/features/predictions/utils/sensor-data';
 
 const AQIComponent: React.FC = () => {
@@ -71,13 +69,13 @@ const AQIComponent: React.FC = () => {
 
     return (
         <motion.div
-            className="system p-8 flex-1 bg-gradient-to-br from-white to-blue-100 rounded-xl h-[92vh] shadow-xl w-[81vw] overflow-x-hidden overflow-y-auto"
+            className="p-8 flex-1 bg-gradient-to-br from-white to-blue-100 rounded-xl h-screen shadow-xl w-full overflow-x-hidden scrollbar-hide"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
         >
             <motion.h2
-                className="text-[2vw] font-bold mb-6 text-center text-gray-700"
+                className="text-[4vh] font-bold mb-6 text-center text-gray-700"
                 animate={{ scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, repeatType: "mirror" }}
             >

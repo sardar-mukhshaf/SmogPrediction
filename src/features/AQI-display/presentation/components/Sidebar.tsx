@@ -67,7 +67,7 @@ const Sidebar = () => {
         <motion.aside
           animate={{ width: sidebarOpen ? "12rem" : "4rem" }}
           transition={{ duration: 0.3 }}
-          className="fixed top-15 left-0 h-screen bg-white border-r shadow-md flex flex-col rounded-r-xl z-40"
+          className="fixed top-15 left-0 h-screen bg-white border-r shadow-md flex flex-col rounded-r-xl z-40 scrollbar-hide"
         >
           <div className="flex items-center justify-between p-4">
             {sidebarOpen && <span className="text-lg font-semibold text-gray-800">Menu</span>}

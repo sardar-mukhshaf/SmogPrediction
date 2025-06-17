@@ -5,7 +5,7 @@ import { lazy } from "react";
 const LiveSmog = lazy(() => import("./LiveSmog"));
 const LiveSmogValues = () => {
     return (
-        <div className='flex flex-col h-screen overflow-y-scroll'>
+        <div className='flex flex-col h-screen overflow-x-hidden scrollbar-hide'>
             <Navbar />
             <div className='flex'>
                 <Sidebar />

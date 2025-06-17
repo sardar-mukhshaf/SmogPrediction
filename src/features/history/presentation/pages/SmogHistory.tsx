@@ -5,7 +5,7 @@ import { lazy } from "react";
 const History = lazy(() => import("./History"));
 const SmogHistory = () => {
     return (
-        <div className='flex flex-col h-screen overflow-y-scroll'>
+        <div className='flex flex-col h-screen overflow-x-hidden scrollbar-hide'>
             <Navbar />
             <div className='flex'>
                 <Sidebar />

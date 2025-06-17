@@ -13,8 +13,8 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 text-white py-4 shadow-xl sticky top-0 z-20">
-            <div className="container mx-auto flex justify-between items-center px-4">
+        <nav className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 text-white py-4 shadow-xl sticky top-0 z-20 scrollbar-hide">
+            <div className="container mx-auto flex justify-between items-center px-4 ">
                 {/* Brand & Welcome Message */}
                 <span className="text-2xl -ml-16 font-bold tracking-wide drop-shadow-md">
                     Welcome, {user.name.split(" ")[0]}

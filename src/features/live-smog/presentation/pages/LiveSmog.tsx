@@ -70,7 +70,7 @@ const LiveSmogScene = () => {
 
             {/* Current Smog Levels */}
             <motion.div
-                className="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center gap-2"
+                className="bg-white p-6 mx-12 rounded-xl shadow-lg flex flex-col items-center justify-center gap-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -85,7 +85,7 @@ const LiveSmogScene = () => {
 
             {/* Pollutant Levels */}
             <motion.div
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className="bg-white p-6 mx-12 rounded-xl shadow-lg"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
