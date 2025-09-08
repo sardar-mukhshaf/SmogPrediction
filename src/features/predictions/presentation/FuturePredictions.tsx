@@ -20,34 +20,50 @@ const FuturePredictions: React.FC = () => {
   const [pageKey, setPageKey] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchAqiPrediction = async (): Promise<void> => {
-    try {
-      const data: SensorData = sensorInput[Math.floor(Math.random() * sensorInput.length)];
+  const fetchAqiPrediction = async (retryCount = 0): Promise<void> => {
+  try {
+    const data: SensorData = sensorInput[Math.floor(Math.random() * sensorInput.length)];
 
-      const response = await axios.post<{ predicted_aqi: number }>(
-        process.env.NEXT_PUBLIC_AQI_API_URL || "https://aqi-api-clean.onrender.com/predict",
-        data,
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 15000,
-        }
-      );
+    const response = await axios.post<{ predicted_aqi: number }>(
+      process.env.NEXT_PUBLIC_AQI_API_URL || "https://aqi-api-clean.onrender.com/predict",
+      data,
+      {
+        headers: { "Content-Type": "application/json" },
+        timeout: 15000,
+      }
+    );
 
-      const predictedAQI = parseFloat((response.data.predicted_aqi || 120).toFixed(2));
-      setAqi(predictedAQI);
+    const predictedAQI = parseFloat((response.data.predicted_aqi || 120).toFixed(2));
+    setAqi(predictedAQI);
 
-      setForecast({
-        day: parseFloat((predictedAQI + 5 + (Math.random() * 6 - 4)).toFixed(2)),
-        week: parseFloat((predictedAQI + 15 + (Math.random() * 16 - 7)).toFixed(2)),
-        month: parseFloat((predictedAQI + 30 + (Math.random() * 30 - 13)).toFixed(2)),
-      });
+    setForecast({
+      day: parseFloat((predictedAQI + 5 + (Math.random() * 6 - 4)).toFixed(2)),
+      week: parseFloat((predictedAQI + 15 + (Math.random() * 16 - 7)).toFixed(2)),
+      month: parseFloat((predictedAQI + 30 + (Math.random() * 30 - 13)).toFixed(2)),
+    });
 
-      setError(null);
-      checkAndNotifyAQI(predictedAQI);
-    } catch (error) {
-      toast.error("Failed to fetch AQI prediction. Please try again later.");
+    setError(null);
+    checkAndNotifyAQI(predictedAQI);
+  } catch (error) {
+    const fallbackAQI = 120;
+    setAqi(fallbackAQI);
+
+    setForecast({
+      day: parseFloat((fallbackAQI + 5 + (Math.random() * 6 - 4)).toFixed(2)),
+      week: parseFloat((fallbackAQI + 15 + (Math.random() * 16 - 7)).toFixed(2)),
+      month: parseFloat((fallbackAQI + 30 + (Math.random() * 30 - 13)).toFixed(2)),
+    });
+
+    setError("Newtwork error occurred.");
+
+    toast.error("Network Error");
+
+    
+    if (retryCount === 0) {
+      setTimeout(() => fetchAqiPrediction(1), 2000);
     }
-  };
+  }
+};
 
 
   const checkAndNotifyAQI = (aqi: number): void => {
@@ -56,7 +72,7 @@ const FuturePredictions: React.FC = () => {
     if (aqi > 101) {
       let message = "";
       let colorClass = "";
-      let IconComponent = MdWarning; // Default icon
+      let IconComponent = MdWarning; 
 
       if (aqi <= 150) {
         message = "Unhealthy for Sensitive Groups: Limit prolonged outdoor activity.";

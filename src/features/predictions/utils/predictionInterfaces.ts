@@ -47,3 +47,4 @@ export const getAQILevel = (value: number): AQILevel => {
   if (value <= 300) return aqiLevels[4];
   return aqiLevels[5];
 };
+

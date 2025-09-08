@@ -17,3 +17,5 @@ const Predictions = () => {
 }
 
 export default Predictions;
+
+
