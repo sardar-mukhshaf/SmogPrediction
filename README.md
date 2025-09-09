@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SmogPrediction 
 
-## Getting Started
+SmogPrediction is a frontend client for a smog/air-quality prediction system. It collects sensor or user inputs, interfaces with a prediction API, visualizes live Air Quality Index (AQI), displays historical predictions, and provides user authentication and configuration options. Built as a multi-page Single Page Application (SPA) with modularized features for analytics, live displays, history, and prediction workflows.
 
-First, run the development server:
+## Quick Start
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. **Install Dependencies**  
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server**  
+   ```bash
+   npm start
+   ```
+
+3. **Build for Production**  
+   ```bash
+   npm run build
+   ```
+
+## Environment Setup
+
+- Create a `.env` file in the frontend root directory to configure the API base URL for predictions.
+- Example `.env` (for Vite):
+
+for now api is directly injected
+  ```
+  VITE_API_URL=http://localhost:8000/api/predict
+  ```
+
+## API Integration
+
+- **Prediction Endpoint**: Single POST endpoint for predictions.
+  - Sends JSON input and expects JSON output with prediction results and metadata.
+- **Centralized API Logic**: Store API-related code in `src/services` or `src/config` for easy swapping and testing.
+
+## Primary Features
+
+- **Live AQI Display**: Real-time AQI updates with visual widgets.
+- **Prediction Workflow**: Input forms and results display for air quality predictions.
+- **Authentication**: Login, logout, and optional user settings management.
+- **Historical Predictions**: View, filter, and export past predictions and logs.
+- **Analytics**: Charts and summaries for air quality trends and insights.
+
+## Folder Structure
+
+```plaintext
+frontend/
+├── public/                    # Static assets
+├── src/
+│   ├── app/                   # Root app logic, routing, and global providers
+│   ├── config/                # API client, constants, and environment settings
+│   ├── features/
+│   │   ├── analytics/         # Charts, aggregates, and analytics pages
+│   │   ├── aqi-display/       # Live AQI widgets, gauges, and visual components
+│   │   ├── authentication/    # Login, signup, token handling, and protected routes
+│   │   ├── history/           # Historical predictions, logs, and export features
+│   │   ├── livesmog/          # Live smog monitoring UI with polling/WebSocket logic
+│   │   ├── predictions/       # Prediction input forms and results pages
+│   │   └── components/        # Shared UI components
+│   ├── services/              # API call wrappers and network utilities
+│   ├── testing/               # Test cases
+│   ├── index.{js,jsx,ts,tsx}  # Entry point
+│   └── App.{js,jsx,ts,tsx}    # Main app component
+├── .env                       # Environment variables (not committed)
+├── package.json               # Project dependencies and scripts
+└── README.md                  # Project documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Module Breakdown
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **`app/`**: Manages global state, routing, and application bootstrap.
+- **`config/`**: Stores environment settings, API base URL, and feature flags.
+- **`analytics/`**: Contains chart components, data aggregation, and analytics pages.
+- **`aqi-display/`**: Displays live AQI with gauges, color-coded visuals, and tooltips.
+- **`authentication/`**: Handles login/signup forms, auth context, hooks, and token storage.
+- **`history/`**: Provides UI for listing, filtering, and exporting historical predictions.
+- **`livesmog/`**: Implements live data fetching via polling or WebSockets with UI panels.
+- **`predictions/`**: Manages input forms, API request builders, and prediction result displays.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development Notes
 
-## Learn More
+- **API Centralization**: Keep API calls in `src/services` or `src/config` to simplify mocking and testing.
+- **Environment Security**: Do not commit `.env` files with sensitive data. Only store non-sensitive URLs.
+- **Error Handling**: Implement error handling and loading states for all network requests.
+- **Live Data**: If using WebSockets, abstract socket logic into `livesmog/` or `services/socket.js`.
 
-To learn more about Next.js, take a look at the following resources:
+## Additional Resources
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- To generate a checklist badge for the README, an `.env.example` file, or TODOs for each folder, let me know!
+- For API details, refer to the backend documentation (not included here).
+- For testing, place test cases in `src/testing/`.
