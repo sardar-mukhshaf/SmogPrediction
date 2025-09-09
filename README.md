@@ -1,6 +1,10 @@
-# SmogPrediction 
+# SmogPrediction — Frontend
 
 SmogPrediction is a frontend client for a smog/air-quality prediction system. It collects sensor or user inputs, interfaces with a prediction API, visualizes live Air Quality Index (AQI), displays historical predictions, and provides user authentication and configuration options. Built as a multi-page Single Page Application (SPA) with modularized features for analytics, live displays, history, and prediction workflows.
+
+## Live Demo
+
+[SmogPrediction Live Demo](https://smog-prediction.netlify.app/) *(Note: Replace with actual deployment URL once available)*
 
 ## Quick Start
 
@@ -23,8 +27,6 @@ SmogPrediction is a frontend client for a smog/air-quality prediction system. It
 
 - Create a `.env` file in the frontend root directory to configure the API base URL for predictions.
 - Example `.env` (for Vite):
-
-for now api is directly injected
   ```
   VITE_API_URL=http://localhost:8000/api/predict
   ```
@@ -85,9 +87,3 @@ frontend/
 - **Environment Security**: Do not commit `.env` files with sensitive data. Only store non-sensitive URLs.
 - **Error Handling**: Implement error handling and loading states for all network requests.
 - **Live Data**: If using WebSockets, abstract socket logic into `livesmog/` or `services/socket.js`.
-
-## Additional Resources
-
-- To generate a checklist badge for the README, an `.env.example` file, or TODOs for each folder, let me know!
-- For API details, refer to the backend documentation (not included here).
-- For testing, place test cases in `src/testing/`.
