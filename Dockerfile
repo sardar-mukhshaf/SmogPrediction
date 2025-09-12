@@ -1,5 +1,7 @@
+ARG NODE_VERSION=22.1-alpine
+
 # Stage 1: Build Next.js app
-FROM node:20-slim AS builder
+FROM node:${NODE_VERSION} AS builder
 
 WORKDIR /app
 

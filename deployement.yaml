@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smog-frontend
+  namespace: smog-prediction
+  labels:
+    app: smog-frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: smog-frontend
+  template:
+    metadata:
+      labels:
+        app: smog-frontend
+    spec:
+      containers:
+        - name: smog-frontend
+          image: sardarmukhshaf/smog-prediction:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 5
