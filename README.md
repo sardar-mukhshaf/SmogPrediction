@@ -1,4 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚡ Next.js Project
+
+![GitHub repo size](https://img.shields.io/github/repo-size/sardar-mukhshaf/SmogPrediction?style=flat-square)
+![GitHub contributors](https://img.shields.io/github/contributors/sardar-mukhshaf/SmogPrediction?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/sardar-mukhshaf/SmogPrediction?style=flat-square)
+![GitHub license](https://img.shields.io/github/license/sardar-mukhshaf/SmogPrediction?style=flat-square)
+
+A modern web application built with [Next.js](https://nextjs.org) and [TypeScript](https://www.typescriptlang.org/), bootstrapped using [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## 🚀 Features
+- ⚡ **Next.js 14** with App Router  
+- 🎨 Tailwind CSS / SCSS support (if added)  
+- 🔤 Optimized fonts with [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)  
+- 📦 Zero-config TypeScript support  
+- 🔄 Hot reloading during development  
+- ☁️ Easy deployment on [Vercel](https://vercel.com/)  
+
+## 📦 Tech Stack
+- [Next.js](https://nextjs.org) – React framework for production  
+- [React](https://react.dev/) – UI library  
+- [TypeScript](https://www.typescriptlang.org/) – static typing  
+- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) – code linting & formatting  
+
+---
+
+## 🛠️ Getting Started
+
+### 1️⃣ Clone the repo
+```bash
+git clone https://github.com/sardar-mukhshaf/SmogPrediction.git
+cd SmogPrediction
 
 ## Getting Started
 
